@@ -1,0 +1,79 @@
+
+-- DROP TABLE IF EXISTS public.employee;
+
+CREATE TABLE IF NOT EXISTS public.employee
+(
+    id uuid NOT NULL,
+    emp_code text COLLATE pg_catalog."default",
+    full_name text COLLATE pg_catalog."default",
+    dob date,
+    joined_date date,
+    experience integer,
+    phone_number text COLLATE pg_catalog."default",
+    last_month_present_days integer,
+    last_month_salary integer,
+    CONSTRAINT employee_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.employee
+    OWNER to dev_user;
+
+
+
+
+
+
+
+
+ //-----------------------------------------------------------
+
+
+
+    -- DROP TABLE IF EXISTS public.attendance;
+
+CREATE TABLE IF NOT EXISTS public.attendance
+(
+    id uuid NOT NULL,
+    employee_id uuid,
+    attendance_date date,
+    status text COLLATE pg_catalog."default",
+    CONSTRAINT attendance_pkey PRIMARY KEY (id),
+    CONSTRAINT fk_emp FOREIGN KEY (employee_id)
+        REFERENCES public.employee (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.attendance
+    OWNER to dev_user;
+
+
+
+
+//-----------------------------
+
+
+
+
+
+
+    -- DROP TABLE IF EXISTS public.holidays;
+
+CREATE TABLE IF NOT EXISTS public.holidays
+(
+    id uuid,
+    title text COLLATE pg_catalog."default",
+    holiday_date date
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.holidays
+    OWNER to dev_user;
+
+
+
