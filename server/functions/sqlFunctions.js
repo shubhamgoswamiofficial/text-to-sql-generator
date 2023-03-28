@@ -1,6 +1,7 @@
 const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
 const openai = new OpenAIApi(configuration);
+const { sendEmail } = require('../utils/emailSender')
 
 const generateSql = async (params) => {
     let { speech } = params
@@ -24,6 +25,7 @@ const generateSql = async (params) => {
         frequency_penalty: 0.0,
         presence_penalty: 0.0,
     }
+
 
     return openai.createCompletion(openAiObj)
         .then(res => res?.data)

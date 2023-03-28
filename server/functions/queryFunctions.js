@@ -1,6 +1,7 @@
 const { Configuration, OpenAIApi } = require("openai");
 const { DbSchema } = require("../schema/dbSchema");
 const Pool = require('pg').Pool
+const { sendEmail } = require('../utils/emailSender')
 
 
 const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
@@ -67,6 +68,9 @@ const getAnswerFromQueryAndRecords = async (query, records) => {
     })
     if (openaiRes.data && openaiRes.data.choices && openaiRes.data.choices.length) {
         console.log("getAnswerFromQueryAndRecords openaiRes: ", openaiRes.data.choices)
+
+        await sendEmail({data: openaiRes?.data?.choices[0]?.text?.trim()?.split("\n") })
+
         return openaiRes.data.choices[0].text.trim().split("\n");
     }
     return ""
