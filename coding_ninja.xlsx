@@ -1,0 +1,4 @@
+id,name,email,created_at,updated_at
+1,user1,user1@test.com,Thu Mar 30 2023 00:33:57 GMT+0530 (India Standard Time),Thu Mar 30 2023 00:33:57 GMT+0530 (India Standard Time)
+2,user2,user2@test.com,Thu Mar 30 2023 00:33:57 GMT+0530 (India Standard Time),Thu Mar 30 2023 00:33:57 GMT+0530 (India Standard Time)
+3,user3,user3@test.com,Thu Mar 30 2023 00:33:57 GMT+0530 (India Standard Time),Thu Mar 30 2023 00:33:57 GMT+0530 (India Standard Time)

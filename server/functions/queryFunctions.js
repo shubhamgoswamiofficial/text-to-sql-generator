@@ -69,7 +69,7 @@ const getAnswerFromQueryAndRecords = async (query, records) => {
     if (openaiRes.data && openaiRes.data.choices && openaiRes.data.choices.length) {
         console.log("getAnswerFromQueryAndRecords openaiRes: ", openaiRes.data.choices)
 
-        await sendEmail({data: openaiRes?.data?.choices[0]?.text?.trim()?.split("\n") })
+        //await sendEmail({ records })
 
         return openaiRes.data.choices[0].text.trim().split("\n");
     }

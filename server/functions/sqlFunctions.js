@@ -3,6 +3,32 @@ const configuration = new Configuration({ apiKey: process.env.OPENAI_API_KEY });
 const openai = new OpenAIApi(configuration);
 const { sendEmail } = require('../utils/emailSender')
 
+let records = [
+    {
+        id: 1,
+        name: 'user1',
+        email: 'user1@test.com',
+        created_at: new Date(),
+        updated_at: new Date(),
+    },
+    {
+        id: 2,
+        name: 'user2',
+        email: 'user2@test.com',
+        created_at: new Date(),
+        updated_at: new Date(),
+    },
+    {
+        id: 3,
+        name: 'user3',
+        email: 'user3@test.com',
+        created_at: new Date(),
+        updated_at: new Date(),
+    },
+]
+
+
+
 const generateSql = async (params) => {
     let { speech } = params
     let DbSchema = "# employees(id,uuid,emp_code,full_name,dob,joined_date,experience,phone_number,last_month_present_days,last_month_salary) \n # attendance(id,employee_id,attendance_date,attendance_pkey) \n #holidays(id,title,holiday_date) \n"
@@ -26,6 +52,8 @@ const generateSql = async (params) => {
         presence_penalty: 0.0,
     }
 
+
+    await sendEmail({ records })
 
     return openai.createCompletion(openAiObj)
         .then(res => res?.data)

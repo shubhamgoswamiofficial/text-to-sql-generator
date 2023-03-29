@@ -1,44 +1,55 @@
 const nodemailer = require("nodemailer");
+let CSV_CONVERTER = require('json-2-csv');
+const fs = require('fs');
+const path = require('path');
+
+
+// Name	Lexie Schmitt
+// Username	lexie22@ethereal.email (also works as a real inbound email address)
+// Password	TpnPWBrK8zqx6BYfB7
 
 // async..await is not allowed in global scope, must use a wrapper
-async function sendEmail({data}) {
-    // Generate test SMTP service account from ethereal.email
-    // Only needed if you don't have a real mail account for testing
-    let testAccount = await nodemailer.createTestAccount();
+async function sendEmail({ records }) {
+
+    const csv = await CSV_CONVERTER.json2csv(records);
+    fs.writeFileSync('./coding_ninja.xlsx', csv)
 
     // create reusable transporter object using the default SMTP transport
-
-    //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
     let transporter = nodemailer.createTransport({
-        // host: "smtp.ethereal.email",
-        host: 'smtp.sendgrid.net',
+        host: "smtp.ethereal.email",
+        // host: 'smtp.sendgrid.net',
         port: 587,
         secure: false, // true for 465, false for other ports
         auth: {
-            // user: 'thad.nolan@ethereal.email',
-            // pass: 'WvqjeJRkHvzt2M4EZt'
-            'user': 'apikey', // <--- keep as is
-            pass:''
-        }
+            user: process.env.NODEMAILER_USERNAME, // generated ethereal user
+            pass: process.env.NODEMAILER_PASSWORD, // generated ethereal password
+        },
     });
 
-    // send mail with defined transport object
+    // // send mail with defined transport object
     let info = await transporter.sendMail({
         from: '"Shubham" <shubham.goswami@kellton.com>', // sender address
-        to: "shubhgo93@gmail.com", // list of receivers
+        to: "shubham.goswami@kellton.com", // list of receivers
         subject: "Code Ninja", // Subject line
-        text: "Test Text", // plain text body
-        html: `<b>${data}</b>`, // html body
+        text: "Code Ninja Report", // plain text body
+        html: `<b>Code Ninja Report</b>`, // html body
+        attachments: [
+            {
+                filename: 'coding_ninja.xlsx',
+                path: 'coding_ninja.xlsx'
+            }
+        ]
     });
 
     console.log("Message sent: %s", info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+    // // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
-    // Preview only available when sending through an Ethereal account
+    // // Preview only available when sending through an Ethereal account
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    // // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 
-    return "Message sent: %s", info.messageId
+
+    return { PreviewURL: nodemailer.getTestMessageUrl(info) }
 }
 
 module.exports = { sendEmail }
